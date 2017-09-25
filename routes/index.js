@@ -32,11 +32,15 @@ router.get('/getPerson', function(req, res, next) {
 });
 
 router.get('getAmount', function(req, res, next) {
-    res.render('index', { title: 'Express' });
+    res.send({status: "ok", data: persons.length})
 });
 
 router.get('addPerson', function(req, res, next) {
-    res.render('index', { title: 'Express' });
+    if(req.query.token){
+    	if(req.query.name && req.query.sName){
+    		
+    	}
+    }
 });
 
 
