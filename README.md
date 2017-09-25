@@ -1,1 +1,3 @@
-# kpp-lab2
+# Лабороторна работа 2
+
+Тест: https://pacific-wave-24461.herokuapp.com/
