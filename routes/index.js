@@ -31,15 +31,35 @@ router.get('/getPerson', function(req, res, next) {
     }
 });
 
-router.get('getAmount', function(req, res, next) {
+router.get('/getAmount', function(req, res, next) {
     res.send({status: "ok", data: persons.length})
 });
 
-router.get('addPerson', function(req, res, next) {
+router.get('/addPerson', function(req, res, next) {
     if(req.query.token){
     	if(req.query.name && req.query.sName){
-    		
+    		let didFind = false
+	        for (let el of persons) {
+	        	didFind = false
+	            if (el.name == req.query.name && el.sName == req.query.sName) {
+	                res.send({ status: "error", error: "Даний запис вже існує" })
+	                didFind = true
+	            }
+	        }
+	        if(!didFind){
+	        	let obj = {name: req.query.name, sName: req.query.sName, id: ++id};
+	    		persons.push(obj)
+	    		console.log(id)
+	    		console.log(persons)
+	    		res.send({status: "ok"})
+	        }
     	}
+    	else{
+    		res.send({ status: "error", error: "Відсутні ім'я чи прізвище" })
+    	}
+    }
+    else{
+    	res.send({ status: "error", error: "Відсутній токен" })
     }
 });
 
