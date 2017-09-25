@@ -20,6 +20,7 @@ router.get('/getPerson', function(req, res, next) {
             if (el.id == req.query.id) {
                 res.send({ status: "ok", data: el })
                 didFind = true
+                break;
             }
         }
         if(didFind == false){
@@ -44,6 +45,7 @@ router.get('/addPerson', function(req, res, next) {
 	            if (el.name == req.query.name && el.sName == req.query.sName) {
 	                res.send({ status: "error", error: "Даний запис вже існує" })
 	                didFind = true
+	                break;
 	            }
 	        }
 	        if(!didFind){
