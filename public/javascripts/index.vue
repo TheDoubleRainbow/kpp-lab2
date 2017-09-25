@@ -9,7 +9,7 @@ new Vue({
 		fetch('/getPerson?id=0')
 		.then(function(response) {
 			response.json().then(function(data) {
-				that.tests.push({link: "/getPerson?id=1", answer: data.data.name + " " + data.data.sName})
+				that.tests.push({link: "/getPerson?id=0", answer: data.data.name + " " + data.data.sName})
 			});
 		});
 		fetch('/getPerson?id=1337')
