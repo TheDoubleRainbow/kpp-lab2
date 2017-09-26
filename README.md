@@ -3,5 +3,5 @@
 Тест: https://pacific-wave-24461.herokuapp.com/
 
 <br />
-<img src="screen.png" />
-<img src="screen2.png" />
+<img width="50%" height="50%" src="screen.png" />
+<img width="50%" height="50%" src="screen2.png" />
