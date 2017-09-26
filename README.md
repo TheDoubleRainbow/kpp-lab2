@@ -4,4 +4,3 @@
 
 <br />
 <img width="50%" height="50%" src="screen.png" />
-<img width="50%" height="50%" src="screen2.png" />
