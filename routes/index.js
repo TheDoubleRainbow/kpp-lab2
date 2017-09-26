@@ -12,58 +12,73 @@ router.get('/', function(req, res, next) {
     res.render('index', { title: 'Express' });
 });
 
-router.get('/getPerson', function(req, res, next) {
-    if (req.query.id) {
-    	let didFind = false
+router.post('/editPerson', function(req, res, next) {
+    	let didFind = false;
         for (let el of persons) {
-        	didFind = false
-            if (el.id == req.query.id) {
-                res.send({ status: "ok", data: el })
-                didFind = true
+        	didFind = false;
+            if (el.id == req.body.id) {
+                el.name = req.body.name;
+                el.sName = req.body.sName;
+                res.send({ status: "ok", data: persons })
+                didFind = true;
                 break;
             }
         }
         if(didFind == false){
         	res.send({ status: "error", error: "Відсутній ID у базі" })
         }
-
-    } else {
-        res.send({ status: "error", error: "Відсутній ID у запиті" })
-    }
 });
 
-router.get('/getAmount', function(req, res, next) {
-    res.send({status: "ok", data: persons.length})
+router.get('/getPersons', function(req, res, next) {
+    res.send({status: "ok", data: persons})
 });
 
-router.get('/addPerson', function(req, res, next) {
-    if(req.query.token){
-    	if(req.query.name && req.query.sName){
-    		let didFind = false
-	        for (let el of persons) {
-	        	didFind = false
-	            if (el.name == req.query.name && el.sName == req.query.sName) {
-	                res.send({ status: "error", error: "Даний запис вже існує" })
-	                didFind = true
-	                break;
-	            }
-	        }
-	        if(!didFind){
-	        	let obj = {name: req.query.name, sName: req.query.sName, id: ++id};
-	    		persons.push(obj)
-	    		console.log(id)
-	    		console.log(persons)
-	    		res.send({status: "ok"})
-	        }
-    	}
-    	else{
-    		res.send({ status: "error", error: "Відсутні ім'я чи прізвище" })
-    	}
-    }
-    else{
-    	res.send({ status: "error", error: "Відсутній токен" })
-    }
+router.post('/addPerson', function(req, res) {
+	if(req.body.token){
+	    	if(req.body.name && req.body.sName){
+	    		let didFind = false
+		        for (let el of persons) {
+		        	didFind = false
+		            if (el.name == req.body.name && el.sName == req.body.sName) {
+		                res.send({ status: "error", error: "Даний запис вже існує" })
+		                didFind = true
+		                break;
+		            }
+		        }
+		        if(!didFind){
+		        	let obj = {name: req.body.name, sName: req.body.sName, id: ++id};
+		    		persons.push(obj)
+		    		console.log(id)
+		    		console.log(persons)
+		    		res.send({status: "ok", data: persons})
+		        }
+	    	}
+	    	else{
+	    		res.send({ status: "error", error: "Відсутні ім'я чи прізвище" })
+	    	}
+	    }
+	    else{
+	    	res.send({ status: "error", error: "Відсутній токен" })
+	    }
+	});
+
+router.post('/deletePerson', function(req, res, next) {
+    	let didFind = false;
+        for (let el of persons) {
+        	didFind = false;
+            if (el.id == req.body.id) {
+            	console.log(el)
+            	persons.splice(persons.indexOf(el), 1);
+                res.send({ status: "ok", data: persons })
+                didFind = true;
+                break;
+            }
+        }
+        if(didFind == false){
+        	res.send({ status: "error", error: "Відсутній ID у базі" })
+        }
 });
+
 
 
 

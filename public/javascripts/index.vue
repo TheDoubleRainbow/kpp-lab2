@@ -1,58 +1,68 @@
 new Vue({
-	el: "#main",
-	data: {
-		tests: []
-	},
+    el: "#main",
+    data: {
+        persons: []
+    },
 
-	created: function(){
-		let that = this;
-		fetch('/getPerson?id=0')
-		.then(function(response) {
-			response.json().then(function(data) {
-				that.tests.push({link: "/getPerson?id=0", answer: data.data.name + " " + data.data.sName})
-			});
-		});
-		fetch('/getPerson?id=1337')
-		.then(function(response) {
-			response.json().then(function(data) {
-				that.tests.push({link: "/getPerson?id=1337", answer: data.error})
-			});
-		});
-		fetch('/getPerson')
-		.then(function(response) {
-			response.json().then(function(data) {
-				that.tests.push({link: "/getPerson", answer: data.error})
-			});
-		});
-		fetch('/getAmount')
-		.then(function(response) {
-			response.json().then(function(data) {
-				that.tests.push({link: "/getAmount", answer: data.data})
-			});
-		});
-		fetch('/addPerson?token=8d0d99c453975d045587b3ef103a98f7&name=Іван&sName=Гамаз')
-		.then(function(response) {
-			response.json().then(function(data) {
-				that.tests.push({link: "/addPerson?token=8d0d99c453975d045587b3ef103a98f7&name=Іван&sName=Гамаз", answer: data.error})
-			});
-		});
-		fetch('/getAmount')
-		.then(function(response) {
-			response.json().then(function(data) {
-				that.tests.push({link: "/getAmount", answer: data.data})
-			});
-		});
-		fetch('/addPerson?name=Іван&sName=Гамаз')
-		.then(function(response) {
-			response.json().then(function(data) {
-				that.tests.push({link: "/addPerson?name=Іван&sName=Гамаз", answer: data.error})
-			});
-		});
-		fetch('/addPerson?token=8d0d99c453975d045587b3ef103a98f7')
-		.then(function(response) {
-			response.json().then(function(data) {
-				that.tests.push({link: "/addPerson?token=8d0d99c453975d045587b3ef103a98f7", answer: data.error})
-			});
-		});
-	}
+    methods: {
+        addPerson: function(value) {
+            let that = this;
+        	let newValue = prompt("Нове ім'я", '');
+        	let nameArray = newValue.split(' ');
+            axios.post('/addPerson', {
+                    token: '8d0d99c453975d045587b3ef103a98f7',
+                    name: nameArray[0],
+                    sName: nameArray[1]
+                })
+                .then(function(response) {
+                    if (response.data.status == "error"){
+                    	alert("Error")
+                    }
+                    else{
+                    	that.persons = response.data.data
+                    }
+                })
+        },
+        editPerson: function(person) {
+        	let that = this;
+        	let newValue = prompt("Нове ім'я", person.name + ' ' + person.sName);
+        	let nameArray = newValue.split(' ');
+            axios.post('/editPerson', {
+                   	name: nameArray[0],
+                	sName: nameArray[1],
+                    id: person.id
+                })
+                .then(function(response) {
+                	console.log(response)
+                    if (response.data.status == "error"){
+                    	alert("Error")
+                    }
+                    else{
+                    	that.persons = response.data.data
+                    }
+                })
+        },
+        deletePerson: function(id){
+        	let that = this;
+        	axios.post('/deletePerson', {
+                    id: id
+                })
+                .then(function(response) {
+                    if (response.data.status == "error"){
+                    	alert("Error")
+                    }
+                    else{
+                    	that.persons = response.data.data
+                    }
+                })
+        }
+    },
+
+    created: function() {
+        let that = this;
+        axios.get('/getPersons')
+            .then(function(response) {
+                that.persons = response.data.data
+            })
+    }
 })

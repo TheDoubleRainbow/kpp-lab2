@@ -4,9 +4,15 @@ html
 		title API tests
 		link(rel='stylesheet', href='/stylesheets/style.css')
 		script(type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js")
+		script(defer type="text/javascript" src="/javascripts/axios.js")
 		script(defer type="text/javascript" src="/javascripts/index.vue")
 	body
 		#main
-			.test(v-for="test in tests")
-				h3 {{test.link}}
-				h2 {{test.answer}}
+			#persons
+				#add(@click="addPerson()") +
+				.personBlock(v-for="person in persons")
+					.edit(@click="editPerson(person)") edit
+					.person 
+						h3 {{person.name + ' ' + person.sName}}
+					.delete(@click="deletePerson(person.id)") del
+				
